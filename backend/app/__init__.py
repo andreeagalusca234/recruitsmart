@@ -1,0 +1,1 @@
+"""RecruitSmart FastAPI backend."""
