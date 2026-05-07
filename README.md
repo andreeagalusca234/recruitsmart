@@ -1,65 +1,60 @@
 # RecruitSmart LBS
 
-RecruitSmart LBS is a full-stack MVP scaffold for an AI-powered recruitment co-pilot for London Business School MBA students. It uses the TIER framework: Target, Identify, Evaluate, Rank.
+RecruitSmart LBS is a Streamlit app for London Business School MBA students managing their recruitment pipeline with the TIER framework: Target, Identify, Evaluate, Rank.
 
-## Stack
+The app is stored on GitHub and runs in the browser through Streamlit.
 
-- Next.js 14 App Router
-- TypeScript
-- Tailwind CSS
-- shadcn/ui-style local primitives
-- Prisma ORM with SQLite for local development
-- NextAuth.js credentials provider stub
-- Zustand-ready client state dependency
+## Run Locally
 
-## Getting Started
-
-Install dependencies:
+From the project folder:
 
 ```bash
-npm install
+cd D:\am01-code-sep2025\recruitsmart
+python -m pip install -r requirements-streamlit.txt
+python -m streamlit run streamlit_app.py
 ```
 
-Generate Prisma client and run the local migration:
+Open the browser URL Streamlit prints, usually:
 
-```bash
-npm run prisma:generate
-npm run prisma:migrate -- --name init
+```text
+http://localhost:8501
 ```
 
-Seed demo data:
+## Deploy On Streamlit Cloud
 
-```bash
-npm run prisma:seed
+1. Go to [share.streamlit.io](https://share.streamlit.io).
+2. Sign in with GitHub.
+3. Choose this repo: `andreeagalusca234/recruitsmart`.
+4. Set the main file path to:
+
+```text
+streamlit_app.py
 ```
 
-Start the app:
+5. Deploy.
 
-```bash
-npm run dev
+## What Is Included
+
+- Streamlit sidebar navigation
+- Onboarding wizard shell
+- Dashboard checklist
+- Target company list with tiers and vote status
+- Company intelligence tabs
+- Daily target list workflow
+- Contact tracker and meeting notes
+- Job description capture with mocked parsing output
+- Pipeline board
+- Notification centre
+- Settings page
+
+## Data And AI
+
+The app currently uses in-memory demo data and mocked AI outputs. It does not call external APIs or real LLMs yet.
+
+## Optional Next.js Scaffold
+
+The repo also contains the earlier Next.js/Prisma scaffold under `src/` and `prisma/`. That code is kept for reference, but the primary runnable app is now:
+
+```text
+streamlit_app.py
 ```
-
-Open `http://localhost:3000`. The root page redirects to `/dashboard`.
-
-## Streamlit Preview
-
-If Node.js is not installed yet, you can open a Python preview in the browser:
-
-```bash
-pip install -r requirements-streamlit.txt
-streamlit run streamlit_app.py
-```
-
-This is a lightweight preview of the product screens. The main implementation is still the Next.js app.
-
-## Demo Data
-
-The seed script creates one LBS MBA demo user, eight consulting-focused companies across Dream, Target, and Safety tiers, contacts, jobs, applications, checklist items, and notifications.
-
-## AI Stubs
-
-Mock AI functions live in `src/lib/ai.ts`. They return deterministic placeholder data for daily targets, JD parsing, action plans, outreach drafts, meeting summaries, LinkedIn PDF parsing, and contact search instructions.
-
-## Notes
-
-This scaffold intentionally does not include real LLM calls, external API integrations, email sending, CV parsing, billing, or an admin panel.
