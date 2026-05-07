@@ -3,7 +3,7 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from app.models import ApplicationStage, CompanyTier, JobSourcePlatform, VoteStatus
+from app.models import ApplicationStage, CompanyTier, FileKind, JobSourcePlatform, VoteStatus
 
 
 class CompanyRead(BaseModel):
@@ -69,6 +69,21 @@ class NotificationRead(BaseModel):
     message: str
     read: bool
     company_id: str | None = None
+    created_at: datetime
+
+
+class FileAssetRead(BaseModel):
+    id: str
+    user_id: str
+    company_id: str | None = None
+    job_id: str | None = None
+    file_kind: FileKind
+    original_filename: str
+    content_type: str | None = None
+    size_bytes: int
+    storage_backend: str
+    storage_key: str
+    bucket: str | None = None
     created_at: datetime
 
 

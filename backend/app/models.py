@@ -70,6 +70,13 @@ class NotificationType(str, Enum):
     STAGE_CHANGE = "STAGE_CHANGE"
 
 
+class FileKind(str, Enum):
+    CV = "CV"
+    JOB_DESCRIPTION = "JOB_DESCRIPTION"
+    CONTACT_IMPORT = "CONTACT_IMPORT"
+    OTHER = "OTHER"
+
+
 class User(SQLModel, table=True):
     id: str = Field(default_factory=new_id, primary_key=True)
     email: str = Field(index=True, unique=True)
@@ -173,4 +180,19 @@ class Notification(SQLModel, table=True):
     message: str
     read: bool = Field(default=False, index=True)
     company_id: str | None = Field(default=None, foreign_key="company.id", index=True)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class FileAsset(SQLModel, table=True):
+    id: str = Field(default_factory=new_id, primary_key=True)
+    user_id: str = Field(foreign_key="user.id", index=True)
+    company_id: str | None = Field(default=None, foreign_key="company.id", index=True)
+    job_id: str | None = Field(default=None, foreign_key="job.id", index=True)
+    file_kind: FileKind = Field(index=True)
+    original_filename: str
+    content_type: str | None = None
+    size_bytes: int
+    storage_backend: str
+    storage_key: str = Field(index=True)
+    bucket: str | None = None
     created_at: datetime = Field(default_factory=datetime.utcnow)

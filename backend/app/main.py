@@ -6,7 +6,7 @@ from sqlmodel import Session
 
 from app.core.config import settings
 from app.db.session import engine, init_db
-from app.routers import ai, applications, checklist, companies, contacts, health, jobs, notifications
+from app.routers import ai, applications, checklist, companies, contacts, files, health, jobs, notifications
 from app.seed import seed_demo_data
 
 
@@ -37,6 +37,7 @@ app.include_router(applications.router, prefix="/api")
 app.include_router(checklist.router, prefix="/api")
 app.include_router(notifications.router, prefix="/api")
 app.include_router(ai.router, prefix="/api")
+app.include_router(files.router, prefix="/api")
 
 
 @app.get("/")

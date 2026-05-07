@@ -20,6 +20,7 @@ recruitsmart/
 - FastAPI backend scaffold
 - SQLite local storage by default
 - Postgres-ready `DATABASE_URL`
+- Local and S3-compatible file storage support
 - API routes under `/api`
 - Streamlit prototype preserved under `prototype/`
 - Original Next.js scaffold preserved under `frontend/`
@@ -52,6 +53,34 @@ Open:
 
 ```text
 http://localhost:8000/docs
+```
+
+## File Storage
+
+The backend now supports file metadata plus file byte storage.
+
+Development defaults:
+
+```text
+STORAGE_BACKEND=local
+LOCAL_STORAGE_DIR=./storage
+```
+
+Production can use S3-compatible storage, including AWS S3 or Cloudflare R2:
+
+```text
+STORAGE_BACKEND=s3
+S3_BUCKET=recruitsmart-files
+S3_REGION=auto
+S3_ENDPOINT_URL=https://<account-id>.r2.cloudflarestorage.com
+S3_ACCESS_KEY_ID=...
+S3_SECRET_ACCESS_KEY=...
+```
+
+Upload endpoint:
+
+```text
+POST /api/files/upload
 ```
 
 ## Import Lovable

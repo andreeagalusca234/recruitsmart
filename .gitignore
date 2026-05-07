@@ -9,6 +9,7 @@ dist
 backend/.env
 backend/.venv
 backend/recruitsmart.db
+backend/storage
 database/prisma/*.db
 database/prisma/*.db-journal
 *.log

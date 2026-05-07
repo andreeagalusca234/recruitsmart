@@ -6,9 +6,12 @@ services:
     environment:
       DATABASE_URL: sqlite:///./recruitsmart.db
       FRONTEND_ORIGIN: http://localhost:3000
+      STORAGE_BACKEND: local
+      LOCAL_STORAGE_DIR: /app/storage
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - ./backend/storage:/app/storage
 
   # Add a Postgres service when moving beyond the MVP SQLite setup.

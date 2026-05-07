@@ -17,3 +17,5 @@ DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/recruitsmart
 - `prisma/` keeps the original Prisma schema and migration from the first scaffold.
 - The new FastAPI backend uses SQLModel models in `backend/app/models.py`.
 - Alembic migrations should be added once the FastAPI schema stabilises.
+- File metadata is stored in the database through `FileAsset`.
+- File bytes are stored locally in dev or in S3-compatible object storage in production.
