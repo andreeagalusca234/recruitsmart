@@ -29,6 +29,31 @@ http://localhost:8000/docs
 - S3-compatible storage config for AWS S3 or Cloudflare R2
 - Postgres-ready via `DATABASE_URL`
 
+## Auth
+
+The MVP backend has simple email/password auth with signed bearer tokens.
+
+Seeded demo credentials:
+
+```text
+email: demo@london.edu
+password: demo-password
+```
+
+Endpoints:
+
+```text
+POST /api/auth/login
+GET /api/auth/me
+POST /api/auth/logout
+```
+
+Use the returned token in frontend requests:
+
+```text
+Authorization: Bearer <access_token>
+```
+
 ## File Storage
 
 Local development uses:

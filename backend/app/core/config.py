@@ -5,6 +5,8 @@ class Settings(BaseSettings):
     app_name: str = "RecruitSmart LBS API"
     database_url: str = "sqlite:///./recruitsmart.db"
     frontend_origin: str = "http://localhost:3000"
+    auth_secret: str = "dev-only-change-me"
+    access_token_expire_minutes: int = 1440
     storage_backend: str = "local"
     local_storage_dir: str = "./storage"
     s3_bucket: str | None = None

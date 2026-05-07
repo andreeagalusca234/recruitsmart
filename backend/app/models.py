@@ -80,6 +80,7 @@ class FileKind(str, Enum):
 class User(SQLModel, table=True):
     id: str = Field(default_factory=new_id, primary_key=True)
     email: str = Field(index=True, unique=True)
+    password_hash: str | None = None
     name: str | None = None
     career_persona: CareerPersona = CareerPersona.CAREER_SWITCHER
     target_role: str | None = None

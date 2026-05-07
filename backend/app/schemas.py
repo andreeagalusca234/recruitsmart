@@ -3,7 +3,34 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from app.models import ApplicationStage, CompanyTier, FileKind, JobSourcePlatform, VoteStatus
+from app.models import ApplicationStage, CareerPersona, CompanyTier, FileKind, JobSourcePlatform, VoteStatus
+
+
+class UserRead(BaseModel):
+    id: str
+    email: str
+    name: str | None = None
+    career_persona: CareerPersona
+    target_role: str | None = None
+    target_industry: str | None = None
+    target_geography: str | None = None
+    cv_uploaded: bool
+    onboarding_complete: bool
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class AuthToken(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserRead
+
+
+class MessageResponse(BaseModel):
+    message: str
 
 
 class CompanyRead(BaseModel):

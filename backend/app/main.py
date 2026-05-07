@@ -6,7 +6,7 @@ from sqlmodel import Session
 
 from app.core.config import settings
 from app.db.session import engine, init_db
-from app.routers import ai, applications, checklist, companies, contacts, files, health, jobs, notifications
+from app.routers import ai, applications, auth, checklist, companies, contacts, files, health, jobs, notifications
 from app.seed import seed_demo_data
 
 
@@ -30,6 +30,7 @@ app.add_middleware(
 )
 
 app.include_router(health.router)
+app.include_router(auth.router, prefix="/api")
 app.include_router(companies.router, prefix="/api")
 app.include_router(contacts.router, prefix="/api")
 app.include_router(jobs.router, prefix="/api")

@@ -20,6 +20,7 @@ from app.models import (
     User,
     VoteStatus,
 )
+from app.security import hash_password
 
 
 def seed_demo_data(session: Session) -> None:
@@ -29,6 +30,7 @@ def seed_demo_data(session: Session) -> None:
 
     user = User(
         email="demo@london.edu",
+        password_hash=hash_password("demo-password"),
         name="Maya Patel",
         career_persona=CareerPersona.CAREER_SWITCHER,
         target_role="Strategy Consultant",

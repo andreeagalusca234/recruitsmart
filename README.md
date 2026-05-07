@@ -18,6 +18,7 @@ recruitsmart/
 - GitHub repo: `andreeagalusca234/recruitsmart`
 - Clean folder architecture for Lovable import
 - FastAPI backend scaffold
+- MVP email/password auth with bearer tokens
 - SQLite local storage by default
 - Postgres-ready `DATABASE_URL`
 - Local and S3-compatible file storage support
@@ -53,6 +54,13 @@ Open:
 
 ```text
 http://localhost:8000/docs
+```
+
+Demo login:
+
+```text
+email: demo@london.edu
+password: demo-password
 ```
 
 ## File Storage
@@ -101,6 +109,7 @@ http://localhost:8000/api
 ```
 
 4. Replace Lovable mock data with calls to the FastAPI endpoints.
+5. Use `POST /api/auth/login` for the login screen and store the returned bearer token client-side.
 
 ## Hosting Direction
 
