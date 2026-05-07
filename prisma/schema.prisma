@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum CareerPersona {
+  CAREER_SWITCHER
+  ACCELERATOR
+  GEOGRAPHY_SWITCHER
+}
+
+enum CompanyTier {
+  DREAM
+  TARGET
+  SAFETY
+}
+
+enum CompanySource {
+  AI_SUGGESTED
+  MANUAL
+}
+
+enum VoteStatus {
+  UPVOTED
+  DOWNVOTED
+  NONE
+}
+
+enum ContactSource {
+  MANUAL
+  LINKEDIN_PDF
+}
+
+enum JobSourcePlatform {
+  LINKEDIN
+  INDEED
+  MYCAREER
+  COMPANY_SITE
+  OTHER
+}
+
+enum ApplicationStage {
+  RESEARCHING
+  APPLIED
+  INTERVIEW
+  OFFER
+}
+
+enum ChecklistSource {
+  AI_GENERATED
+  CUSTOM
+}
+
+enum NotificationType {
+  DEADLINE
+  FOLLOW_UP
+  WARMTH_DECAY
+  DAILY_LIST
+  WEEKLY_DIGEST
+  STAGE_CHANGE
+}
+
+model User {
+  id                 String        @id @default(cuid())
+  email              String        @unique
+  name               String?
+  careerPersona      CareerPersona
+  targetRole         String?
+  targetIndustry     String?
+  targetGeography    String?
+  cvUploaded         Boolean       @default(false)
+  onboardingComplete Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  companies     Company[]
+  contacts      Contact[]
+  jobs          Job[]
+  applications  Application[]
+  checklistItems ChecklistItem[]
+  notifications Notification[]
+}
+
+model Company {
+  id          String        @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  sector      String?
+  size        String?
+  hqLocation  String?
+  careersUrl  String?
+  linkedinUrl String?
+  tier        CompanyTier
+  source      CompanySource @default(MANUAL)
+  aiRationale String?
+  vote        VoteStatus    @default(NONE)
+  voteReason  String?
+  voteNote    String?
+  createdAt   DateTime      @default(now())
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contacts       Contact[]
+  jobs           Job[]
+  checklistItems ChecklistItem[]
+  notifications  Notification[]
+
+  @@index([userId])
+  @@index([tier])
+}
+
+model Contact {
+  id                String        @id @default(cuid())
+  userId            String
+  companyId         String
+  name              String
+  role              String?
+  linkedinUrl       String?
+  email             String?
+  warmthScore       Int
+  source            ContactSource @default(MANUAL)
+  notes             String?
+  lastInteractionAt DateTime?
+  createdAt         DateTime      @default(now())
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  meetingNotes MeetingNote[]
+
+  @@index([userId])
+  @@index([companyId])
+}
+
+model MeetingNote {
+  id             String    @id @default(cuid())
+  contactId      String
+  date           DateTime
+  notes          String
+  aiSummary      String?
+  followUpNeeded Boolean   @default(false)
+  followUpDoneAt DateTime?
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([contactId])
+}
+
+model Job {
+  id             String            @id @default(cuid())
+  userId         String
+  companyId      String
+  title          String
+  url            String?
+  jdText         String?
+  sourcePlatform JobSourcePlatform @default(OTHER)
+  deadline       DateTime?
+  fitScore       Int?
+  parsedSkills   Json?
+  createdAt      DateTime          @default(now())
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  applications Application[]
+
+  @@index([userId])
+  @@index([companyId])
+}
+
+model Application {
+  id           String           @id @default(cuid())
+  jobId        String
+  userId       String
+  stage        ApplicationStage @default(RESEARCHING)
+  stageHistory Json
+  offerDetails Json?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  job            Job             @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checklistItems ChecklistItem[]
+
+  @@index([jobId])
+  @@index([userId])
+  @@index([stage])
+}
+
+model ChecklistItem {
+  id            String          @id @default(cuid())
+  userId        String
+  companyId     String
+  applicationId String?
+  label         String
+  completed     Boolean         @default(false)
+  dueDate       DateTime?
+  sortOrder     Int             @default(0)
+  source        ChecklistSource @default(CUSTOM)
+  createdAt     DateTime        @default(now())
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company     Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  application Application? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([companyId])
+  @@index([applicationId])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  message   String
+  read      Boolean          @default(false)
+  companyId String?
+  createdAt DateTime         @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([companyId])
+  @@index([read])
+}
